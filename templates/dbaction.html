@@ -1,0 +1,177 @@
+{% extends "layout.html" %}
+{% block body %}
+<style>
+         /* CSS cho button */
+        .center-align-button {
+            margin-top: 70px !important;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px; /* Khoảng cách giữa các paragraphs và button bên dưới */
+        }
+     .progress {
+        width: 100%;
+        height: 30px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #4CAF50;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+</style>
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Database Actions</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#!">Database Actions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="pcoded-content">
+
+    <!-- [ Main Content ] start -->
+    <div class="row">
+        <!-- [ variant-chart ] start -->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Source connection : mrd_db_spring_core</h5>
+                </div>
+                <div class="card-body">
+                    <form name="form-source-connection" method="POST">
+                        <div id="line-chart-1">
+                            <div class="form-group row">
+                                <label class="col-form-label-sm-cus label-custom-dbaction"><b>Dialect</b> :
+                                    <span id="dialectSourceValue">{{dbTargetInfor.dialect}}</span>
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label-sm-cus label-custom-dbaction"><b>DB_Name</b> :
+                                    <span id="nameSourceValue">{{dbTargetInfor.name}}</span>
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label-sm-cus label-custom-dbaction"><b>DB_Host</b> :
+                                    <span id="hostSourceValue">{{dbTargetInfor.host}}</span>
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label-sm-cus label-custom-dbaction"><b>DB_Port</b> :
+                                    <span id="portSourceValue">{{dbTargetInfor.port}}</span>
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label-sm-cus label-custom-dbaction"><b>DB_User</b> :
+                                    <span id="userSourceValue">{{dbTargetInfor.username}}</span>
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label-sm-cus label-custom-dbaction"><b>DB_Pass</b> :
+                                    <span id="passSourceValue">{{dbTargetInfor.password}}</span>
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="center-align-button">
+                           <button type="button" class="btn  btn-info" onclick="genSourceConnectionData()">Test Connection</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2" style="display: flex;
+            align-items: center;
+            justify-content: center;">
+            <button type="button" class="btn  btn-success" onclick="startMigration()">Migration to</button>
+        </div>
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Target connection : </h5>
+                </div>
+                <div class="card-body">
+                    <form name="form-target-connection" method="POST">
+                        <div id="area-chart-1">
+                            <div class="form-group row">
+                                <label for="inputDialect" class="col-sm-3 col-form-label-sm-cus"><b>Dialect</b> :</label>
+                                <div class="col-sm-9">
+                                    <select name="dialectTargetValue" class="form-control form-control-sm" id="inputDialect">
+                                        <option value="mysql">MYSQL</option>
+                                        <option value="postgresql">POSTGRESQL</option>
+                                        <option value="msssql">MSSSQL</option>
+                                        <option value="oracle">ORACLE</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label-sm-cus"><b>DB_Name</b> :</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="nameTargetValue" class="form-control form-control-sm" id="colFormLabelSm">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label-sm-cus"><b>DB_Host</b> :</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="hostTargetValue" class="form-control form-control-sm">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label-sm-cus"><b>DB_Port</b> :</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="portTargetValue" class="form-control form-control-sm">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label-sm-cus"><b>DB_User</b> :</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="userTargetValue" class="form-control form-control-sm">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3  col-form-label-sm-cus"><b>DB_Pass</b> :</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="passTargetValue" class="form-control form-control-sm">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="center-align-button">
+                            <button type="button" class="btn  btn-info" onclick="genTargetConnectionData()">Test Connection</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+         <div class="progress">
+             <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="progress-bar"></div>
+         </div>
+    </div>
+    <!-- [ Main Content ] end -->
+</div>
+
+
+{% endblock %}

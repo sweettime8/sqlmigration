@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>App Mysql to PostgreeSql</title>
+    <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 11]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content="">
+    <meta name="author" content="Phoenixcoded"/>
+    <!-- Favicon icon -->
+    <link rel="icon" href="{{url_for('static', filename='images/favicon.ico')}}" type="image/x-icon">
+    <!-- vendor css -->
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+
+</head>
+<body class="">
+<!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+    <div class="loader-track">
+        <div class="loader-fill"></div>
+    </div>
+</div>
+<!-- [ Pre-loader ] End -->
+<!-- [ navigation menu ] start -->
+<nav class="pcoded-navbar  ">
+    <div class="navbar-wrapper  ">
+        <div class="navbar-content scroll-div ">
+
+            <div class="">
+                <div class="main-menu-header">
+                    <img class="img-radius" src="{{url_for('static', filename='images/user/avatar-2.jpg')}}"
+                         alt="User-Profile-Image">
+
+                    <div class="user-details">
+                        <span>Ducnh44</span>
+                        <div id="more-details">PID.SKU-COE<i class="fa fa-chevron-down m-l-5"></i></div>
+                    </div>
+                </div>
+                <div class="collapse" id="nav-user-link">
+                    <ul class="list-unstyled">
+                        <li class="list-group-item"><a href="user-profile.html"><i class="feather icon-user m-r-5"></i>View
+                            Profile</a></li>
+                        <li class="list-group-item"><a href="#!"><i class="feather icon-settings m-r-5"></i>Settings</a>
+                        </li>
+                        <li class="list-group-item"><a href="auth-normal-sign-in.html"><i
+                                class="feather icon-log-out m-r-5"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <ul class="nav pcoded-inner-navbar ">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Database Connections</label>
+                </li>
+
+                {% for item in connectionInfo %}
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="#" class="nav-link connection-link"
+                       onclick="loadData('{{item.name}}', '{{item.host}}')"><span class="pcoded-micon"><i
+                            class="fa fa-database"></i></span><span class="pcoded-mtext">{{item.name}}</span></a>
+                    <ul class="pcoded-submenu" id="submenu_{{item.name}}_{{item.host}}">
+                        {% for item2 in list_table %}
+                        <li><a href="#"><span class="pcoded-micon custom-size"><i class="fa fa-table"></i> </span>
+                            {{item2}}</a></li>
+                        {% endfor %}
+                        <li><a href="#"><span class="nav-item pcoded-micon"><i class="fa fa-edit"></i> </span>
+                            Actions</a></li>
+                    </ul>
+                </li>
+                {% endfor %}
+
+                <!--					<li class="nav-item pcoded-hasmenu">-->
+                <!--						<a href="#!" class="nav-link "><span class="pcoded-micon"><i class="fa fa-database"></i></span><span class="pcoded-mtext">localhost (skudb)</span></a>-->
+                <!--						<ul class="pcoded-submenu">-->
+                <!--							<li><a href="bc_alert.html"><span class="pcoded-micon"><i class="fa fa-table"></i> </span> t_comment</a></li>-->
+                <!--							<li><a href="bc_alert.html"><span class="pcoded-micon"><i class="fa fa-table"></i> </span>t_comment</a></li>-->
+                <!--							<li><a href="bc_alert.html"><span class="pcoded-micon"><i class="fa fa-table"></i> </span>t_comment</a></li>-->
+                <!--							<li><a href="bc_alert.html"><span class="pcoded-micon"><i class="fa fa-table"></i> </span>t_comment</a></li>-->
+                <!--							<li><a href="bc_alert.html"><span class="pcoded-micon"><i class="fa fa-table"></i> </span>t_comment</a></li>-->
+                <!--						</ul>-->
+                <!--					</li>-->
+
+
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Settings</label>
+                </li>
+                <li class="nav-item">
+                    <a href="/general" class="nav-link "><span class="pcoded-micon"><i
+                            class="fa fa-random"></i></span><span class="pcoded-mtext">General</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i
+                            class="fa fa-magic"></i></span><span class="pcoded-mtext">Rules</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i
+                            class="fa fa-life-ring"></i></span><span class="pcoded-mtext">Help</span></a>
+                </li>
+
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
+<!-- [ navigation menu ] end -->
+<!-- [ Header ] start -->
+
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-content">
+
+        <!-- [ breadcrumb ] end -->
+        <!-- [ Main Content ] start -->
+
+        {% block body %}
+
+        {% endblock %}
+
+        <!-- [ Main Content ] end -->
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+<!-- Warning Section start -->
+<!-- Older IE warning message -->
+<!--[if lt IE 11]>
+<div class="ie-warning">
+    <h1>Warning!!</h1>
+    <p>You are using an outdated version of Internet Explorer, please upgrade
+        <br/>to any of the following web browsers to access this website.
+    </p>
+    <div class="iew-container">
+        <ul class="iew-download">
+            <li>
+                <a href="http://www.google.com/chrome/">
+                    <img src="assets/images/browser/chrome.png" alt="Chrome">
+                    <div>Chrome</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                    <img src="assets/images/browser/firefox.png" alt="Firefox">
+                    <div>Firefox</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.opera.com">
+                    <img src="assets/images/browser/opera.png" alt="Opera">
+                    <div>Opera</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.apple.com/safari/">
+                    <img src="assets/images/browser/safari.png" alt="Safari">
+                    <div>Safari</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="assets/images/browser/ie.png" alt="">
+                    <div>IE (11 & above)</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <p>Sorry for the inconvenience!</p>
+</div>
+<![endif]-->
+<!-- Warning Section Ends -->
+
+<!-- Required Js -->
+<script src="{{url_for('static', filename='js/vendor-all.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/plugins/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/pcoded.min.js')}}"></script>
+
+<!-- Apex Chart -->
+<script src="{{url_for('static', filename='js/plugins/apexcharts.min.js')}}"></script>
+
+<!-- custom-chart js -->
+<script src="{{url_for('static', filename='js/pages/dashboard-main.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+
+<script>
+	let activeButton = null;
+	function toggleActiveState(button) {
+		console.log("mrd")
+		if (activeButton === button) {
+			// Nếu click vào button đang active lần thứ 2, xóa class 'active' để remove hiệu ứng
+			button.classList.remove('active');
+			activeButton = null; // Đặt giá trị activeButton là null để không còn button nào active
+		} else {
+			if (activeButton !== null) {
+				// Nếu đã có button active, xóa class 'active' để remove hiệu ứng
+				activeButton.classList.remove('active');
+			}
+
+			// Thêm class 'active' vào button mới để thêm hiệu ứng
+			button.classList.add('active');
+			// Cập nhật button đang active
+			activeButton = button;
+		}
+	}
+
+
+</script>
+
+
+<script>
+        function insertDB(dataFromServer){
+            // Lấy tham chiếu đến bảng
+            const table = document.getElementById("connection-table");
+            let currentRowCount = table.rows.length;
+            // Đổ dữ liệu vào bảng
+
+            const row = table.insertRow(); // Tạo một hàng mới
+
+
+
+            row.insertCell().innerText = currentRowCount; // Thêm số thứ tự (#)
+            row.insertCell().innerText = "Mysql"; // Thêm thông tin Dialect
+            row.insertCell().innerText = dataFromServer.database; // Thêm thông tin Name
+            row.insertCell().innerText = dataFromServer.host; // Thêm thông tin Host
+            row.insertCell().innerText = dataFromServer.port; // Thêm thông tin port
+            row.insertCell().innerText = dataFromServer.username; // Thêm thông tin Username
+
+            // Thêm ô chứa nút Action
+            const actionCell = row.insertCell();
+            actionCell.innerHTML = '<button type="button" class="btn btn-custom btn-outline-info">Edit</button>' +
+            					' <button type="button" class="btn btn-custom btn-outline-danger">Remove</button>';
+
+
+        }
+
+     async function connectDatabase() {
+    	// Lấy tất cả các button choice dialect trong form
+        var buttons = document.querySelectorAll('button.btn-outline-secondary');
+        // Kiểm tra xem có button nào được active không
+        var isActiveButton = false;
+        for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].classList.contains('active')) {
+                isActiveButton = true;
+                break;
+            }
+        }
+        if (!isActiveButton) {
+           alert("Vui lòng chọn một database!"); // Hiển thị thông báo nếu không có button nào được active
+           return; // Ngăn form submit nếu không có button nào được active
+        }
+
+        // Nếu có button được active, tiếp tục xử lý form
+        // Lấy giá trị của button được click
+        var activeButtonValue = '';
+            for (var i = 0; i < buttons.length; i++) {
+                if (buttons[i].classList.contains('active')) {
+                    activeButtonValue = buttons[i].textContent;
+                    break;
+                }
+        }
+
+        // Lấy dữ liệu từ form
+        var form_data = {
+        	dialect: activeButtonValue.toLowerCase(),
+            host: document.forms["form-add-connection"]["host"].value,
+            port: document.forms["form-add-connection"]["port"].value,
+            database: document.forms["form-add-connection"]["database"].value,
+            username: document.forms["form-add-connection"]["username"].value,
+            password: document.forms["form-add-connection"]["password"].value,
+        };
+
+        try {
+            // Gửi request POST đến Flask route "/connection-database"
+            const response = await fetch('/connection-database', {
+                method: 'POST',
+                body: new URLSearchParams(form_data),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            // Chuyển đổi response thành JSON
+            const data = await response.json();
+
+            if(data.status === 'success'){
+				insertDB(data.data)
+				Swal.fire({
+					icon: 'success', // Icon thông báo (success, error, warning, info)
+					text: data.message, // Nội dung thông báo
+					timer: 4000, // Thời gian tự động tắt thông báo (5 giây)
+					toast: true, // Thông báo kiểu toast (true) hoặc popup (false)
+					position: 'top-end', // Vị trí hiển thị thông báo (top, top-start, top-end, center, center-start, center-end, bottom, bottom-start, bottom-end)
+					showConfirmButton: false, // Ẩn nút xác nhận
+           		 });
+
+           		 // Lấy tham chiếu đến modal và đóng nó
+                $('#modalAddConnection').modal('hide');
+            }
+            else{
+            	Swal.fire({
+					icon: 'error', // Icon thông báo (success, error, warning, info)
+					text: data.message, // Nội dung thông báo
+					timer: 4000, // Thời gian tự động tắt thông báo (5 giây)
+					toast: true, // Thông báo kiểu toast (true) hoặc popup (false)
+					position: 'top-end', // Vị trí hiển thị thông báo (top, top-start, top-end, center, center-start, center-end, bottom, bottom-start, bottom-end)
+					showConfirmButton: false, // Ẩn nút xác nhận
+           		 });
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error', // Icon thông báo (success, error, warning, info)
+                text: data.message, // Nội dung thông báo
+                timer: 4000, // Thời gian tự động tắt thông báo (5 giây)
+                toast: true, // Thông báo kiểu toast (true) hoặc popup (false)
+                position: 'top-end', // Vị trí hiển thị thông báo (top, top-start, top-end, center, center-start, center-end, bottom, bottom-start, bottom-end)
+                showConfirmButton: false, // Ẩn nút xác nhận
+            });
+        }
+    }
+
+
+    async function testConnection() {
+    	// Lấy tất cả các button choice dialect trong form
+        var buttons = document.querySelectorAll('button.btn-outline-secondary');
+        // Kiểm tra xem có button nào được active không
+        var isActiveButton = false;
+        for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].classList.contains('active')) {
+                isActiveButton = true;
+                break;
+            }
+        }
+        if (!isActiveButton) {
+           alert("Vui lòng chọn một database!"); // Hiển thị thông báo nếu không có button nào được active
+           return; // Ngăn form submit nếu không có button nào được active
+        }
+
+        // Nếu có button được active, tiếp tục xử lý form
+        // Lấy giá trị của button được click
+        var activeButtonValue = '';
+            for (var i = 0; i < buttons.length; i++) {
+                if (buttons[i].classList.contains('active')) {
+                    activeButtonValue = buttons[i].textContent;
+                    break;
+                }
+        }
+
+        // Lấy dữ liệu từ form
+        var form_data = {
+        	dialect: activeButtonValue.toLowerCase(),
+            host: document.forms["form-add-connection"]["host"].value,
+            port: document.forms["form-add-connection"]["port"].value,
+            database: document.forms["form-add-connection"]["database"].value,
+            username: document.forms["form-add-connection"]["username"].value,
+            password: document.forms["form-add-connection"]["password"].value,
+        };
+
+        try {
+            // Gửi request POST đến Flask route "/test-connection"
+            const response = await fetch('/test-connection', {
+                method: 'POST',
+                body: new URLSearchParams(form_data),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            // Chuyển đổi response thành JSON
+            const data = await response.json();
+
+            // Hiển thị thông báo với SweetAlert
+            Swal.fire({
+                icon: data.status === 'success' ? 'success' : 'error', // Icon thông báo (success, error, warning, info)
+                text: data.message, // Nội dung thông báo
+                timer: 4000, // Thời gian tự động tắt thông báo (5 giây)
+                toast: true, // Thông báo kiểu toast (true) hoặc popup (false)
+                position: 'top-end', // Vị trí hiển thị thông báo (top, top-start, top-end, center, center-start, center-end, bottom, bottom-start, bottom-end)
+                showConfirmButton: false, // Ẩn nút xác nhận
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error', // Icon thông báo (success, error, warning, info)
+                text: data.message, // Nội dung thông báo
+                timer: 4000, // Thời gian tự động tắt thông báo (5 giây)
+                toast: true, // Thông báo kiểu toast (true) hoặc popup (false)
+                position: 'top-end', // Vị trí hiển thị thông báo (top, top-start, top-end, center, center-start, center-end, bottom, bottom-start, bottom-end)
+                showConfirmButton: false, // Ẩn nút xác nhận
+            });
+        }
+    }
+
+	async function loadData(dbName, dbHost) {
+		try {
+			// Gọi API AJAX đến Flask route để lấy thông tin từ database
+			const response = await fetch(`/get-list-table?dbname=${dbName}&dbhost=${dbHost}`);
+			const data = await response.json();
+
+			// Hiển thị thông tin trong thẻ li
+			const submenu = document.getElementById(`submenu_${dbName}_${dbHost}`);
+
+			// Xóa các liên kết cũ trong submenu
+			while (submenu.firstChild) {
+				submenu.removeChild(submenu.firstChild);
+			}
+
+			// Thêm các liên kết mới từ dữ liệu nhận được
+			const tableLink2 = document.createElement('a');
+			const tableItem2 = document.createElement('li');
+			tableLink2.href = `/db-actions?dbname=${dbName}&&dbhost=${dbHost}`; // Cập nhật đường dẫn đến trang mới
+			tableLink2.innerHTML = `<span class="pcoded-micon"><i class="fa fa-edit"></i></span>Actions`;
+			tableItem2.appendChild(tableLink2);
+			submenu.appendChild(tableItem2);
+
+			data.table_names.forEach(item => {
+				const tableLink = document.createElement('a');
+				tableLink.href = `#`; // Cập nhật đường dẫn đến trang mới
+				tableLink.innerHTML = `<span class="pcoded-micon"><i class="fa fa-table"></i></span>${item}`;
+				const tableItem = document.createElement('li');
+				tableItem.appendChild(tableLink);
+				submenu.appendChild(tableItem);
+			});
+
+
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+
+
+    async function genSourceConnectionData() {
+        // Lấy dữ liệu từ form
+        var form_data = {
+            dialect : document.getElementById("dialectSourceValue").innerText,
+            host:  document.getElementById("hostSourceValue").innerText,
+            port:  document.getElementById("portSourceValue").innerText,
+            database:  document.getElementById("nameSourceValue").innerText,
+            username:  document.getElementById("userSourceValue").innerText,
+            password:  document.getElementById("passSourceValue").innerText
+        };
+		testSourceConnection(form_data)
+	}
+
+	async function genTargetConnectionData() {
+        // Lấy dữ liệu từ form
+        var form_data = {
+            dialect : document.forms["form-target-connection"]["dialectTargetValue"].value,
+            host: document.forms["form-target-connection"]["hostTargetValue"].value,
+            port: document.forms["form-target-connection"]["portTargetValue"].value,
+            database: document.forms["form-target-connection"]["nameTargetValue"].value,
+            username: document.forms["form-target-connection"]["userTargetValue"].value,
+            password: document.forms["form-target-connection"]["passTargetValue"].value,
+        };
+		testSourceConnection(form_data)
+	}
+
+	async function testSourceConnection(form_data) {
+        try {
+            // Gửi request POST đến Flask route "/test-connection"
+            const response = await fetch('/test-connection', {
+                method: 'POST',
+                body: new URLSearchParams(form_data),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            // Chuyển đổi response thành JSON
+            const data = await response.json();
+
+            // Hiển thị thông báo với SweetAlert
+            Swal.fire({
+                icon: data.status === 'success' ? 'success' : 'error', // Icon thông báo (success, error, warning, info)
+                text: data.message, // Nội dung thông báo
+                timer: 4000, // Thời gian tự động tắt thông báo (5 giây)
+                toast: true, // Thông báo kiểu toast (true) hoặc popup (false)
+                position: 'top-end', // Vị trí hiển thị thông báo (top, top-start, top-end, center, center-start, center-end, bottom, bottom-start, bottom-end)
+                showConfirmButton: false, // Ẩn nút xác nhận
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error', // Icon thông báo (success, error, warning, info)
+                text: data.message, // Nội dung thông báo
+                timer: 4000, // Thời gian tự động tắt thông báo (5 giây)
+                toast: true, // Thông báo kiểu toast (true) hoặc popup (false)
+                position: 'top-end', // Vị trí hiển thị thông báo (top, top-start, top-end, center, center-start, center-end, bottom, bottom-start, bottom-end)
+                showConfirmButton: false, // Ẩn nút xác nhận
+            });
+        }
+    }
+
+
+</script>
+
+<script>
+    async function startMigration() {
+        const progressBar = document.getElementById('progress-bar');
+        const url = '/transfer-actions';
+
+        try {
+            const response = await fetch(url);
+            const total = response.headers.get('content-length');
+            let loaded = 0;
+
+            const reader = response.body.getReader();
+
+            // Đọc response stream và cập nhật progress bar
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) {
+                    progressBar.style.width = '100%';
+                    progressBar.setAttribute('aria-valuenow', 100);
+                    progressBar.innerText = '100%';
+                    break;
+                }
+
+                loaded += value.byteLength;
+                const percentage = (loaded / total) * 100;
+                progressBar.style.width = percentage + '%';
+                progressBar.setAttribute('aria-valuenow', percentage);
+                progressBar.innerText = Math.round(percentage) + '%';
+            }
+
+            // Thực hiện hiển thị thông báo thành công ở đây (có thể dùng SweetAlert2)
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Database migration completed successfully!',
+                timer: 4000 // Hiển thị trong 2 giây
+            });
+
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'error!',
+                text: 'An error occurred during migration!',
+                timer: 4000 // Hiển thị trong 2 giây
+            });
+        }
+    }
+</script>
+
+
+</body>
+
+</html>
