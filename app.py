@@ -13,6 +13,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 db_path = os.path.join(basedir + "\database", 'migrationdb.db')
 
 print("mrd db_path : " + db_path)
+session_path = os.path.abspath(os.path.dirname(__file__)) + "\\flask_session"
 
 app.config["SECRET_KEY"] = 'pid-sku-coe.2023'
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///{}'.format(db_path)
@@ -21,6 +22,24 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///{}'.format(db_path)
 app.config['SESSION_TYPE'] = 'filesystem'  # Lưu trữ session trong tệp hệ thống tạm thời
 # Khởi tạo extension Session
 Session(app)
+
+def clear_session(session_path):
+    # Kiểm tra xem thư mục tồn tại hay không
+    if os.path.exists(session_path):
+        # Lấy danh sách các tệp và thư mục trong folder
+        items = os.listdir(session_path)
+        for item in items:
+            item_path = os.path.join(session_path, item)
+            # Kiểm tra nếu item là thư mục thì gọi đệ quy để xóa nó
+            if os.path.isdir(item_path):
+                clear_session(item_path)
+            else:
+                # Nếu item là tệp tin thì xóa nó
+                os.remove(item_path)
+    else:
+        print(f"Thư mục {session_path} không tồn tại.")
+
+clear_session(session_path)
 
 db = SQLAlchemy(app)
 

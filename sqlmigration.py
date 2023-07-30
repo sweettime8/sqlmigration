@@ -1,10 +1,12 @@
 
 import webview
 from actions import actions
+from mysqlactions import mysqlactions
 import configparser
 from app import app, db
 
 app.register_blueprint(actions)
+app.register_blueprint(mysqlactions)
 
 if __name__ == '__main__':
     with app.app_context():

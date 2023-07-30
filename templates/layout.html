@@ -67,7 +67,7 @@
                 {% for item in connectionInfo %}
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#" class="nav-link connection-link"
-                       onclick="loadData('{{item.name}}', '{{item.host}}')"><span class="pcoded-micon"><i
+                       onclick="loadData('{{item.dialect}}','{{item.name}}', '{{item.host}}')"><span class="pcoded-micon"><i
                             class="fa fa-database"></i></span><span class="pcoded-mtext">{{item.name}}</span></a>
                     <ul class="pcoded-submenu" id="submenu_{{item.name}}_{{item.host}}">
                         {% for item2 in list_table %}
@@ -409,10 +409,11 @@
         }
     }
 
-	async function loadData(dbName, dbHost) {
+	async function loadData(dbdialect, dbName, dbHost) {
 		try {
+		    dbdialect = dbdialect.toLowerCase();
 			// Gọi API AJAX đến Flask route để lấy thông tin từ database
-			const response = await fetch(`/get-list-table?dbname=${dbName}&dbhost=${dbHost}`);
+			const response = await fetch(`/get-list-table?dbdialect=${dbdialect}&dbname=${dbName}&dbhost=${dbHost}`);
 			const data = await response.json();
 
 			// Hiển thị thông tin trong thẻ li
@@ -517,33 +518,39 @@
 
 <script>
     async function startMigration() {
-        const progressBar = document.getElementById('progress-bar');
-        const url = '/transfer-actions';
+        var url = ''
+        if(document.getElementById("dialectSourceValue").innerText.toLowerCase() === 'mysql'){
+            url = '/mysql-transfer-actions';
+        }
 
+
+        var form_data = {
+            sourceDialect : document.getElementById("dialectSourceValue").innerText.toLowerCase(),
+            sourceHost: document.getElementById("hostSourceValue").innerText,
+            sourcePort: document.getElementById("portSourceValue").innerText,
+            sourceDatabase: document.getElementById("nameSourceValue").innerText,
+            sourceUsername: document.getElementById("userSourceValue").innerText,
+            sourcePassword: document.getElementById("passSourceValue").innerText,
+
+            targetDialect : document.forms["form-target-connection"]["dialectTargetValue"].value.toLowerCase(),
+            targetHost: document.forms["form-target-connection"]["hostTargetValue"].value,
+            targetPort: document.forms["form-target-connection"]["portTargetValue"].value,
+            targetDatabase: document.forms["form-target-connection"]["nameTargetValue"].value,
+            targetUsername: document.forms["form-target-connection"]["userTargetValue"].value,
+            targetPassword: document.forms["form-target-connection"]["passTargetValue"].value,
+        };
+
+
+        // Hiện spinner khi click nút
+        document.getElementById('spinner').style.display = 'inline-block';
         try {
-            const response = await fetch(url);
-            const total = response.headers.get('content-length');
-            let loaded = 0;
-
-            const reader = response.body.getReader();
-
-            // Đọc response stream và cập nhật progress bar
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) {
-                    progressBar.style.width = '100%';
-                    progressBar.setAttribute('aria-valuenow', 100);
-                    progressBar.innerText = '100%';
-                    break;
+            const response = await fetch(url, {
+                method: 'POST',
+                body: new URLSearchParams(form_data),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }
-
-                loaded += value.byteLength;
-                const percentage = (loaded / total) * 100;
-                progressBar.style.width = percentage + '%';
-                progressBar.setAttribute('aria-valuenow', percentage);
-                progressBar.innerText = Math.round(percentage) + '%';
-            }
-
+            });
             // Thực hiện hiển thị thông báo thành công ở đây (có thể dùng SweetAlert2)
 
             Swal.fire({
@@ -552,9 +559,11 @@
                 text: 'Database migration completed successfully!',
                 timer: 4000 // Hiển thị trong 2 giây
             });
+            document.getElementById('spinner').style.display = 'none';
 
         } catch (error) {
             console.error('Error:', error);
+            document.getElementById('spinner').style.display = 'none';
             Swal.fire({
                 icon: 'error',
                 title: 'error!',
