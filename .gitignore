@@ -1,0 +1,10 @@
+HELP.md
+dist/
+flask_session/**
+.idea/**
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
